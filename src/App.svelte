@@ -1,17 +1,12 @@
 <script>
-  import { Router, Link, Route} from "svelte-routing";
-  import Counter from "./lib/Counter.svelte";
+  import { Router, Route} from "svelte-routing";
+  import NavBar from "./lib/NavBar.svelte";
 
   export let url = "";
 </script>
 
 <Router { url }>
-  <nav>
-    <Link to="/">Home</Link>
-    <Link to="/login">Login</Link>
-    <Link to="/dashboard">Dashboard</Link>
-    <Link to="/units/1">Units</Link>
-  </nav>
+  <NavBar />
   <div>
     <Route path="/login">
       <p>Login page component will go here.</p>
