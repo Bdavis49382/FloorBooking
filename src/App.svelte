@@ -1,34 +1,35 @@
 <script>
   import { Router, Link, Route } from "svelte-routing";
-  import Counter from "./lib/Counter.svelte";
   import Home from "./lib/Home.svelte"; // Import the Home component
-  let isMenuOpen = false; 
+  import Login from "./lib/Login.svelte";
+  import { user } from "./lib/stores.svelte";
+  import { checkLogin, logout } from "./lib/auth.svelte";
 
+  let isMenuOpen = false; 
   export let url = "";
+  checkLogin();
 </script>
 
 <Router {url}>
-  <!-- <nav>
-    <Link to="/">Home</Link>
-    <Link to="/login">Login</Link>
-    <Link to="/dashboard">Dashboard</Link>
-    <Link to="/units/1">Units</Link>
-  </nav> -->
-
+  
   <header class="bg-white shadow">
-    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center">
-      <h1 class="text-3xl font-bold text-gray-900 text-center md:text-left w-full">
+    <div class="flex flex-col justify-between items-center lg:px-8 max-w-7xl md:flex-row mx-auto px-4 py-6 sm:px-6">
+      <h1 class="text-3xl text-center text-gray-900 w-full font-bold md:text-left">
         <Link to="/">Floor Booking</Link>
       </h1>
       <nav class="hidden md:flex">
         <Link to="/" class="text-gray-900 hover:text-indigo-600 mx-2">Home</Link>
-        <Link to="/login" class="text-gray-900 hover:text-indigo-600 mx-2">Login</Link>
+        {#if user.isLoggedIn}
+          <button onclick={logout} class="text-gray-900 hover:text-indigo-600 mx-2 cursor-pointer">Logout</button>
+        {:else}
+          <Link to="/login" class="text-gray-900 hover:text-indigo-600 mx-2">Login</Link>
+        {/if}
         <Link to="/dashboard" class="text-gray-900 hover:text-indigo-600 mx-2">Dashboard</Link>
         <Link to="/units/1" class="text-gray-900 hover:text-indigo-600 mx-2">Units</Link>
       </nav>
       <button 
-        class="md:hidden text-gray-900 mt-4 md:mt-0"
-        on:click={() => isMenuOpen = !isMenuOpen} 
+        class="text-gray-900 md:hidden md:mt-0 mt-4"
+        onclick={() => isMenuOpen = !isMenuOpen} 
         aria-label="Toggle Menu"
       >
         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -38,17 +39,19 @@
       </button>
     </div>
     {#if isMenuOpen}
-      <nav class="md:hidden bg-white shadow-lg text-center">
-        <Link to="/" class="block text-gray-900 hover:text-indigo-600 px-4 py-2">Home</Link>
-        <Link to="/login" class="block text-gray-900 hover:text-indigo-600 px-4 py-2">Login</Link>
-        <Link to="/dashboard" class="block text-gray-900 hover:text-indigo-600 px-4 py-2">Dashboard</Link>
-        <Link to="/units/1" class="block text-gray-900 hover:text-indigo-600 px-4 py-2">Units</Link>
+      <nav class="bg-white shadow-lg text-center md:hidden">
+        <Link to="/" class="text-gray-900 block hover:text-indigo-600 px-4 py-2">Home</Link>
+        {#if !user.isLoggedIn}
+          <Link to="/login" class="text-gray-900 block hover:text-indigo-600 px-4 py-2">Login</Link>
+        {/if}
+        <Link to="/dashboard" class="text-gray-900 block hover:text-indigo-600 px-4 py-2">Dashboard</Link>
+        <Link to="/units/1" class="text-gray-900 block hover:text-indigo-600 px-4 py-2">Units</Link>
       </nav>
     {/if}
   </header>
   <div>
     <Route path="/login">
-      <p>Login page component will go here.</p>
+      <Login />
     </Route>
     <Route path="/dashboard">
       <p>Dashboard page component will go here.</p>
