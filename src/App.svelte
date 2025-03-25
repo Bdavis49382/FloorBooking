@@ -43,6 +43,8 @@
         <Link to="/" class="text-gray-900 block hover:text-indigo-600 px-4 py-2">Home</Link>
         {#if !user.isLoggedIn}
           <Link to="/login" class="text-gray-900 block hover:text-indigo-600 px-4 py-2">Login</Link>
+        {:else}
+          <button onclick={logout} class="text-gray-900 inline hover:text-indigo-600 px-4 py-2">Logout</button>
         {/if}
         <Link to="/dashboard" class="text-gray-900 block hover:text-indigo-600 px-4 py-2">Dashboard</Link>
         <Link to="/units/1" class="text-gray-900 block hover:text-indigo-600 px-4 py-2">Units</Link>
