@@ -4,7 +4,9 @@
   import Login from "./lib/Login.svelte";
   import { user } from "./lib/stores.svelte";
   import { checkLogin, logout } from "./lib/auth.svelte";
-  import Selection from "./lib/Selection.svelte";
+  import Units from "./lib/Units.svelte";
+  import Units_Details from "./lib/Units_Details.svelte"; // Import the Units_Details component
+  
 
   let isMenuOpen = false; 
   export let url = "";
@@ -59,11 +61,19 @@
     <Route path="/dashboard">
       <p>Dashboard page component will go here.</p>
     </Route>
-    <Route path="/units">
-      <Selection />
+    <Route path="/units/:id" let:params>
+      <div class="py-8">
+        <h1 class="text-4xl font-bold text-gray-900 text-center mb-8">
+          Unit Details
+        </h1>
+        <Units/>
+      </div>
     </Route>
     <Route path="/">
       <Home /> <!-- Use the Home component here -->
+    </Route>
+    <Route path="/">
+      <Units_Details /> <!-- Use the Home component here -->
     </Route>
   </div>
 </Router>
