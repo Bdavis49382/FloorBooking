@@ -4,6 +4,7 @@
   import Login from "./lib/Login.svelte";
   import { user } from "./lib/stores.svelte";
   import { checkLogin, logout } from "./lib/auth.svelte";
+  import Selection from "./lib/Selection.svelte";
 
   let isMenuOpen = false; 
   export let url = "";
@@ -25,7 +26,7 @@
           <Link to="/login" class="text-gray-900 hover:text-indigo-600 mx-2">Login</Link>
         {/if}
         <Link to="/dashboard" class="text-gray-900 hover:text-indigo-600 mx-2">Dashboard</Link>
-        <Link to="/units/1" class="text-gray-900 hover:text-indigo-600 mx-2">Units</Link>
+        <Link to="/units" class="text-gray-900 hover:text-indigo-600 mx-2">Units</Link>
       </nav>
       <button 
         class="text-gray-900 md:hidden md:mt-0 mt-4"
@@ -47,7 +48,7 @@
           <button onclick={logout} class="text-gray-900 inline hover:text-indigo-600 px-4 py-2">Logout</button>
         {/if}
         <Link to="/dashboard" class="text-gray-900 block hover:text-indigo-600 px-4 py-2">Dashboard</Link>
-        <Link to="/units/1" class="text-gray-900 block hover:text-indigo-600 px-4 py-2">Units</Link>
+        <Link to="/units" class="text-gray-900 block hover:text-indigo-600 px-4 py-2">Units</Link>
       </nav>
     {/if}
   </header>
@@ -58,8 +59,8 @@
     <Route path="/dashboard">
       <p>Dashboard page component will go here.</p>
     </Route>
-    <Route path="/units/:id" let:params>
-      <p>Units page component for complex {params.id} will go here.</p>
+    <Route path="/units">
+      <Selection />
     </Route>
     <Route path="/">
       <Home /> <!-- Use the Home component here -->
