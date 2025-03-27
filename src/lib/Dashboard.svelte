@@ -14,7 +14,6 @@ let unitType = "";
     ])
     .select()
   }
-
 </script>
 
 {#if user.isLoggedIn}
@@ -50,6 +49,15 @@ let unitType = "";
         <div>
           <label for="">Unit Type </label>
           <input type="text" name="" id="" class="bg-gray-300 rounded" />
+        </div>
+        <div>
+          <label for="">Unit Price </label>
+          <input type="number" step=".01" name="" id="" class="bg-gray-300 rounded" />
+        </div>
+        <div class="grid">
+          <label for="" class="text-center">Unit Description </label>
+          <!-- <input type="number" name="" id="" class="bg-gray-300 rounded" /> -->
+           <textarea name="" id="" class="bg-gray-300 rounded"></textarea>
         </div>
         <div class="mx-auto">
           <button
