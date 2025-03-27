@@ -2,9 +2,9 @@
   import { Router, Link, Route } from "svelte-routing";
   import Home from "./lib/Home.svelte"; // Import the Home component
   import Login from "./lib/Login.svelte";
+  import Dashboard from "./lib/Dashboard.svelte";
   import { user } from "./lib/stores.svelte";
   import { checkLogin, logout } from "./lib/auth.svelte";
-
   let isMenuOpen = false; 
   export let url = "";
   checkLogin();
@@ -56,7 +56,7 @@
       <Login />
     </Route>
     <Route path="/dashboard">
-      <p>Dashboard page component will go here.</p>
+      <Dashboard />
     </Route>
     <Route path="/units/:id" let:params>
       <p>Units page component for complex {params.id} will go here.</p>
