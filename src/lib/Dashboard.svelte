@@ -2,10 +2,12 @@
   import { supabase } from "./createSupabase";
   import { user } from "./stores.svelte";
   import { Link } from "svelte-routing";
+  import { getUserId } from "./auth.svelte";
 let buildingName = "";
 let unitType = "";
   async function addNewBuilding(e){
     e.preventDefault();
+    const aptId = await getUserId(user.id);
     let {data: Building, error} = await supabase
     .from('Building')
     .insert([
@@ -13,7 +15,9 @@ let unitType = "";
         ApartmentId: user.id}
     ])
     .select()
+    
   }
+  
 </script>
 
 {#if user.isLoggedIn}

@@ -53,4 +53,8 @@ export async function register(email, password) {
 export async function getUserId(userId){
   let {data, error} = await supabase
   .from('Complex')
+  .select('Id')
+  .eq('Auth', userId)
+
+  return data;
 }
