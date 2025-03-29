@@ -3,6 +3,8 @@
   import Home from "./lib/Home.svelte"; // Import the Home component
   import Login from "./lib/Login.svelte";
   import Dashboard from "./lib/Dashboard.svelte";
+  import Selection from "./lib/Selection.svelte";
+  import UnitsDetails from "./lib/Units_Details.svelte";
   import { user } from "./lib/stores.svelte";
   import { checkLogin, logout } from "./lib/auth.svelte";
   let isMenuOpen = false; 

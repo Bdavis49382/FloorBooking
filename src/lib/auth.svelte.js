@@ -56,5 +56,5 @@ export async function getUserId(userId){
   .select('Id')
   .eq('Auth', userId)
 
-  return data;
+  return data[0].Id;
 }

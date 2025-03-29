@@ -5,16 +5,32 @@
   import { getUserId } from "./auth.svelte";
 let buildingName = "";
 let unitType = "";
+let unitPrice = 0;
+let unitDesc = "";
   async function addNewBuilding(e){
     e.preventDefault();
     const aptId = await getUserId(user.id);
     let {data: Building, error} = await supabase
     .from('Building')
     .insert([
-        {Name: buildingName, ApartmentId: aptId[0].Id}
+        {Name: buildingName, ApartmentId: aptId}
     ])
     .select()
     
+  };
+
+  async function addNewUnitType(e){
+    e.preventDefault();
+    const aptId = await getUserId(user.id);
+    console.log(unitType);
+    console.log(unitPrice);
+    console.log(unitDesc);
+    let {data: ApartmentType, error} = await supabase
+    .from('ApartmentType')
+    .insert([
+      {Type: unitType, ApartmentId: aptId, Rent: unitPrice, Description: unitDesc}
+    ])
+    .select()
   }
   
 </script>
@@ -45,22 +61,21 @@ let unitType = "";
     <div class="grid justify-center items-center align-middle my-10">
       <p class="text-4xl text-center my-5">Add Unit Type</p>
       <form
-        action=""
-        method="post"
+        onsubmit={addNewUnitType}
         class="w-96 grid justify-center items-center align-middle py-10 gap-4 bg-gray-100 shadow-md"
       >
         <div>
           <label for="">Unit Type </label>
-          <input type="text" name="" id="" class="bg-gray-300 rounded" />
+          <input type="text" name="" bind:value={unitType} class="bg-gray-300 rounded" />
         </div>
         <div>
           <label for="">Unit Price </label>
-          <input type="number" step=".01" name="" id="" class="bg-gray-300 rounded" />
+          <input type="number" step=".01" name="" bind:value={unitPrice} class="bg-gray-300 rounded" />
         </div>
         <div class="grid">
           <label for="" class="text-center">Unit Description </label>
           <!-- <input type="number" name="" id="" class="bg-gray-300 rounded" /> -->
-           <textarea name="" id="" class="bg-gray-300 rounded"></textarea>
+           <textarea name="" id="" bind:value={unitDesc} class="bg-gray-300 rounded"></textarea>
         </div>
         <div class="mx-auto">
           <button
