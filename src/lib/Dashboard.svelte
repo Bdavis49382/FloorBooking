@@ -1,13 +1,33 @@
 <script>
   import { supabase } from "./createSupabase";
   import { user } from "./stores.svelte";
-  import { Link } from "svelte-routing";
+  import { Link, navigate } from "svelte-routing";
   import { getUserId } from "./auth.svelte";
+  import { getAllBuildings, getAllUnitTypes } from "./dashboard.svelte.js";
+  
 let buildingName = "";
 let unitType = "";
 let unitPrice = 0;
 let unitDesc = "";
-  async function addNewBuilding(e){
+let apartment = ""
+let buildingNumber = "";
+let unitNumber = "";
+
+let buildings = [];
+let unitTypes = [];
+
+async function getBuildings(){
+  buildings = await getAllBuildings();
+}
+async function getAptTypes(){
+  unitTypes = await getAllUnitTypes();
+}
+getBuildings();
+getAptTypes();
+console.clear();
+
+
+async function addNewBuilding(e){
     e.preventDefault();
     const aptId = await getUserId(user.id);
     let {data: Building, error} = await supabase
@@ -16,28 +36,38 @@ let unitDesc = "";
         {Name: buildingName, ApartmentId: aptId}
     ])
     .select()
-    
+  navigate('/');
   };
 
   async function addNewUnitType(e){
     e.preventDefault();
     const aptId = await getUserId(user.id);
-    console.log(unitType);
-    console.log(unitPrice);
-    console.log(unitDesc);
     let {data: ApartmentType, error} = await supabase
     .from('ApartmentType')
     .insert([
       {Type: unitType, ApartmentId: aptId, Rent: unitPrice, Description: unitDesc}
     ])
     .select()
+    navigate('/');
+  }
+
+  async function addNewApartment(e){
+    e.preventDefault();
+    const aptId = await getUserId(user.id);
+    let {data: Apartment, error} = await supabase
+    .from('Unit')
+    .insert([
+      {Name: apartment, ApartmentTypeId: unitNumber, BuildingId: buildingNumber, ComplexId: aptId}
+    ])
+    .select()
+    navigate('/');
   }
   
 </script>
 
 {#if user.isLoggedIn}
   <!-- Container to add Building and Unit -->
-  <div class="grid lg:grid-cols-2 xl:grid-cols-3 font-mono">
+  <div class="grid lg:grid-cols-2 xl:grid-cols-3 font-mono justify-center items-center align-middle">
     <div class="grid justify-center items-center align-middle my-10">
       <p class="text-4xl text-center my-5">Add Building</p>
       <form
@@ -46,7 +76,7 @@ let unitDesc = "";
       >
         <div>
           <label for="">Building Name/# </label>
-          <input type="text" name="building_info" bind:value={buildingName} id="" class="bg-gray-300 rounded" />
+          <input type="text" name="building_info" bind:value={buildingName} id="" class="bg-gray-300 rounded" required/>
         </div>
         <div class="mx-auto">
           <button
@@ -66,16 +96,16 @@ let unitDesc = "";
       >
         <div>
           <label for="">Unit Type </label>
-          <input type="text" name="" bind:value={unitType} class="bg-gray-300 rounded" />
+          <input type="text" name="" bind:value={unitType} class="bg-gray-300 rounded" required/>
         </div>
         <div>
           <label for="">Unit Price </label>
-          <input type="number" step=".01" name="" bind:value={unitPrice} class="bg-gray-300 rounded" />
+          <input type="number" step=".01" name="" bind:value={unitPrice} class="bg-gray-300 rounded" required/>
         </div>
         <div class="grid">
           <label for="" class="text-center">Unit Description </label>
           <!-- <input type="number" name="" id="" class="bg-gray-300 rounded" /> -->
-           <textarea name="" id="" bind:value={unitDesc} class="bg-gray-300 rounded"></textarea>
+           <textarea name="" id="" bind:value={unitDesc} class="bg-gray-300 rounded" required></textarea>
         </div>
         <div class="mx-auto">
           <button
@@ -92,22 +122,35 @@ let unitDesc = "";
     >
       <p class="text-4xl text-center my-5">Add New Apartment</p>
       <form
-        action=""
-        method="post"
+        onsubmit={addNewApartment}
         class="w-96 grid justify-center items-center align-middle py-10 gap-4 bg-gray-100 shadow-md"
       >
         <div>
           <label for="">Apartment # </label>
-          <input type="text" name="" id="" class="bg-gray-300 rounded" />
+          <input type="text" name="" id="" class="bg-gray-300 rounded" bind:value={apartment} required/>
         </div>
         <div class="grid">
-          <select name="" id="" class="text-center bg-gray-300 rounded py-1">
-            <option value="">Building</option>
+          <select name="" id="" bind:value={buildingNumber} class="text-center bg-gray-300 rounded py-1" required>
+            <option value="" disabled={buildings.length > 0} selected={buildingNumber === ""}>Choose a building</option>
+            {#if buildings.length > 0}
+            {#each buildings as building (building.Id)}
+              <option value="{building.Id}">{building.Name}</option>
+            {/each}
+            {:else}
+            <option value="">Loading...</option>
+            {/if}
           </select>
         </div>
         <div class="grid">
-          <select name="" id="" class="text-center bg-gray-300 rounded py-1">
-            <option value="">Unit Type</option>
+          <select name="" id="" class="text-center bg-gray-300 rounded py-1" bind:value={unitNumber} required>
+            <option value="" disabled={unitTypes.length > 0} selected={unitNumber === ""}>Choose apartment type</option>
+            {#if unitTypes.length > 0}
+            {#each unitTypes as unit (unit.Id)}
+              <option value="{unit.Id}">{unit.Type}</option>
+            {/each}
+            {:else}
+            <option value="">Loading...</option>
+            {/if}
           </select>
         </div>
         <div class="mx-auto">
