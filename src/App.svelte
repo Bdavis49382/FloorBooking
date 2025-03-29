@@ -4,8 +4,8 @@
   import Login from "./lib/Login.svelte";
   import { user } from "./lib/stores.svelte";
   import { checkLogin, logout } from "./lib/auth.svelte";
-  import Units from "./lib/Units.svelte";
-  import Units_Details from "./lib/Units_Details.svelte"; // Import the Units_Details component
+  import Selection from "./lib/Selection.svelte";
+  import UnitsDetails from "./lib/Units_Details.svelte";
   
 
   let isMenuOpen = false; 
@@ -28,7 +28,7 @@
           <Link to="/login" class="text-gray-900 hover:text-indigo-600 mx-2">Login</Link>
         {/if}
         <Link to="/dashboard" class="text-gray-900 hover:text-indigo-600 mx-2">Dashboard</Link>
-        <Link to="/units/1" class="text-gray-900 hover:text-indigo-600 mx-2">Units</Link>
+        <Link to="/units" class="text-gray-900 hover:text-indigo-600 mx-2">Units</Link>
       </nav>
       <button 
         class="text-gray-900 md:hidden md:mt-0 mt-4"
@@ -50,7 +50,7 @@
           <button onclick={logout} class="text-gray-900 inline hover:text-indigo-600 px-4 py-2">Logout</button>
         {/if}
         <Link to="/dashboard" class="text-gray-900 block hover:text-indigo-600 px-4 py-2">Dashboard</Link>
-        <Link to="/units/1" class="text-gray-900 block hover:text-indigo-600 px-4 py-2">Units</Link>
+        <Link to="/units" class="text-gray-900 block hover:text-indigo-600 px-4 py-2">Units</Link>
       </nav>
     {/if}
   </header>
@@ -61,22 +61,24 @@
     <Route path="/dashboard">
       <p>Dashboard page component will go here.</p>
     </Route>
-    <Route path="/units/:id" let:params>
-      <div class="py-8">
-        <h1 class="text-4xl font-bold text-gray-900 text-center mb-8">
-          Unit Details
-        </h1>
-        <Units/>
-      </div>
+    <Route path="/units">
+      <Selection />
     </Route>
     <Route path="/">
       <Home /> <!-- Use the Home component here -->
     </Route>
-    <Route path="/">
-      <Units_Details /> <!-- Use the Home component here -->
+    <Route path="/units/:complexId/:unitId" let:params>
+      <UnitsDetails unitId={params.unitId}/>
     </Route>
   </div>
 </Router>
+<footer class="bg-gray-800">
+  <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:py-6 lg:px-8">
+    <p class="text-center text-base text-gray-400">
+      &copy; 2025. All Rights Reserved. FloorBooking is a product of FloorBooking Inc.
+    </p>
+  </div>
+</footer>
 
 <style>
 </style>
