@@ -11,8 +11,7 @@ let unitType = "";
     let {data: Building, error} = await supabase
     .from('Building')
     .insert([
-        {Name: buildingName,
-        ApartmentId: user.id}
+        {Name: buildingName, ApartmentId: aptId[0].Id}
     ])
     .select()
     
