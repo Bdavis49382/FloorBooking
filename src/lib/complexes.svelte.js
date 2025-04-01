@@ -30,7 +30,7 @@ export async function getUnit(unitId) {
         return undefined
     }
     else {
-        data[0]['image'] = "/src/assets/apartment3.jpg";
+        data[0]['image'] = "/assets/apartment3.jpg";
         return data[0];
     }
 }
