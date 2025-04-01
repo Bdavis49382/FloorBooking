@@ -3,7 +3,7 @@
   import { user } from "./stores.svelte";
   import { Link, navigate } from "svelte-routing";
   import { getUserId } from "./auth.svelte";
-  import { getAllBuildings, getAllUnitTypes } from "./dashboard.svelte.js";
+  import { getAllBuildings, getAllUnitTypes, getAllRenters } from "./dashboard.svelte.js";
   
 let buildingName = "";
 let unitType = "";
@@ -62,7 +62,11 @@ async function addNewBuilding(e){
     .select()
     navigate('/');
   }
-  
+  async function getRenters(){
+    let renters = await getAllRenters();
+  console.log(renters);
+  }
+  getRenters();
 </script>
 
 {#if user.isLoggedIn}

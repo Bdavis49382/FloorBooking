@@ -19,3 +19,12 @@ export async function getAllUnitTypes(){
     .eq('ApartmentId', aptId)
     return data;
 }
+export async function getAllRenters(){
+    let {data, error } = await supabase
+    .from('Renter')
+      .select(`
+        Fullname,
+        Unit (Name,Complex(Id))
+      `)
+    return data;
+}
