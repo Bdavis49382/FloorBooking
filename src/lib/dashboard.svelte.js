@@ -23,8 +23,13 @@ export async function getAllRenters(){
     let {data, error } = await supabase
     .from('Renter')
       .select(`
+        Id,
         Fullname,
-        Unit (Name,Complex(Id))
+        Email,
+        Phone,
+        UnitId,
+        Unit (Name, Complex(Id))
       `)
+      .is('Unit.IsAvailable', true)
     return data;
 }
