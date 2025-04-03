@@ -324,7 +324,7 @@ async function updateUnitStatus(e){
             </tbody>
           </table>
         {:else}
-        <p class="text-xl">No Approved Renter Information Available</p>
+        <p class="text-xl text-center my-2">No Approved Renter Information Available</p>
         {/if}
       </div>
   </div>
