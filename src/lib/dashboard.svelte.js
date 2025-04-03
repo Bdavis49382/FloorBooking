@@ -28,8 +28,37 @@ export async function getAllRenters(){
         Email,
         Phone,
         UnitId,
-        Unit (Name, Complex(Id))
+        Unit (Name, Complex(Id), IsAvailable)
       `)
       .is('Unit.IsAvailable', true)
+    return data;
+};
+export async function updateUnit(unitId){
+  let {data, error} = await supabase
+  .from('Unit')
+  .update({'IsAvailable': false})
+  .eq('Id', unitId)
+  .select()
+}
+export async function updateRenters(renterId, unitId){
+  let {data, error} = await supabase
+  .from('Renter')
+  .delete()
+  .eq('UnitId', unitId)
+  .neq('Id', renterId);
+}
+
+export async function getApprovedRenters(){
+  let {data, error } = await supabase
+    .from('Renter')
+      .select(`
+        Id,
+        Fullname,
+        Email,
+        Phone,
+        UnitId,
+        Unit (Name, Complex(Id), IsAvailable)
+      `)
+      .is('Unit.IsAvailable', false)
     return data;
 }

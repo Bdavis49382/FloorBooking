@@ -7,6 +7,9 @@
     getAllBuildings,
     getAllUnitTypes,
     getAllRenters,
+    updateUnit,
+    updateRenters,
+    getApprovedRenters
   } from "./dashboard.svelte.js";
 
   let buildingName = "";
@@ -20,7 +23,7 @@
   let buildings = [];
   let unitTypes = [];
   let renters = [];
-
+  let approvedRenters = [];
   async function getBuildings() {
     buildings = await getAllBuildings();
   }
@@ -30,9 +33,13 @@
   async function getRenters() {
     renters = await getAllRenters();
   }
+  async function getAllApprovedRenters(){
+    approvedRenters = await getApprovedRenters();
+  }
   getBuildings();
   getAptTypes();
   getRenters();
+  getAllApprovedRenters();
   console.clear();
 
   async function addNewBuilding(e) {
@@ -95,6 +102,10 @@ async function updateUnitStatus(e){
   e.preventDefault();
   const formData = new FormData(e.target);
   const unitId = formData.get('unitId');
+  const renterId = formData.get('renterId');
+  await updateUnit(unitId);
+  await updateRenters(renterId, unitId);
+  navigate("/")
 }
 </script>
 
@@ -253,19 +264,20 @@ async function updateUnitStatus(e){
   </div>
   <div>
     <div>
+      <p class="text-4xl text-center">New Requests</p>
         {#if renters.length > 0}
-        <table class="mx-auto text-center my-10 bg-white rounded-xl border">
+        <table class="mx-auto text-center my-10 bg-gray-100 shadow-md">
           <thead>
             <tr>
               <th class="py-2 px-5">Renter Name</th>
               <th class="py-2 px-5 border-x">Renter Email</th>
               <th class="py-2 px-5 border-x">Renter Phone</th>
               <th class="py-2 px-5 border-x">Unit</th>
-              <th class="py-2 px-5 border-x">Approve/Delete</th>
+              <th class="py-2 px-5">Approve/Delete</th>
             </tr>
           </thead>
           <tbody>
-            {#each renters as renter (renter.UnitId)}
+            {#each renters as renter (renter.Id)}
                   <tr>
                   <td class="border-t py-2 px-5">{renter.Fullname}</td>
                   <td class="border-t py-2 px-5 border-x">{renter.Email}</td>
@@ -274,6 +286,7 @@ async function updateUnitStatus(e){
                   <td class="border-t py-2 px-5 flex gap-5">
                     <form onsubmit={updateUnitStatus}>
                       <input type="hidden" value={renter.UnitId} name="unitId">
+                      <input type="hidden" value={renter.Id} name="renterId">
                       <button type="submit" class="text-blue-400 font-semibold cursor-pointer">Approve</button>
                     </form>
                     <form onsubmit={removeRenter}>
@@ -286,7 +299,32 @@ async function updateUnitStatus(e){
             </tbody>
           </table>
         {:else}
-        <p>No Renter Information Available</p>
+        <p class="text-xl text-center my-2">No New Requests Available</p>
+        {/if}
+        <p class="text-4xl text-center my-10">Approved Renters</p>
+        {#if approvedRenters.length > 0}
+        <table class="mx-auto text-center my-10 bg-gray-100 shadow-md">
+          <thead>
+            <tr>
+              <th class="py-2 px-5">Renter Name</th>
+              <th class="py-2 px-5 border-x">Renter Email</th>
+              <th class="py-2 px-5 border-x">Renter Phone</th>
+              <th class="py-2 px-5">Unit</th>
+            </tr>
+          </thead>
+          <tbody>
+            {#each approvedRenters as renter (renter.Id)}
+            <tr>
+              <td class="border-t py-2 px-5">{renter.Fullname}</td>
+              <td class="border-t py-2 px-5 border-x">{renter.Email}</td>
+              <td class="border-t py-2 px-5 border-x">{renter.Phone}</td>
+              <td class="border-t py-2 px-5">{renter.Unit.Name}</td>
+            </tr>
+            {/each}
+            </tbody>
+          </table>
+        {:else}
+        <p class="text-xl">No Approved Renter Information Available</p>
         {/if}
       </div>
   </div>
