@@ -38,7 +38,7 @@
                 <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
                     <div>
                         <label for="firstName" class="block text-sm font-medium text-gray-700">
-                            First Name
+                            Full Name
                         </label>
                         <input
                             type="text"
