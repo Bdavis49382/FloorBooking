@@ -10,7 +10,7 @@
   <!-- Hero Section -->
   <div class="relative bg-white overflow-hidden">
     <div class="absolute inset-0">
-      <img class="w-full h-64 sm:h-80 md:h-full object-cover" src="/src/assets/hero.png" alt="A scenic view of the property">
+      <img class="w-full h-64 sm:h-80 md:h-full object-cover" src="/assets/hero.png" alt="A scenic view of the property">
       <div class="absolute inset-0 bg-gray-900 opacity-50"></div>
     </div>
     
