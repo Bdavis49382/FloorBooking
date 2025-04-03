@@ -30,8 +30,8 @@ export async function getAllRenters(){
         UnitId,
         Unit (Name, Complex(Id), IsAvailable)
       `)
-      .is('Unit.IsAvailable', true)
-    return data;
+      let rentersRequest = data.filter((renter) => renter.Unit['IsAvailable'] == true)
+    return rentersRequest;
 };
 export async function updateUnit(unitId){
   let {data, error} = await supabase
@@ -59,6 +59,7 @@ export async function getApprovedRenters(){
         UnitId,
         Unit (Name, Complex(Id), IsAvailable)
       `)
-      .is('Unit.IsAvailable', false)
-    return data;
+      let approvedRenters = data.filter((renter) => renter.Unit['IsAvailable'] == false)
+      
+    return approvedRenters;
 }
