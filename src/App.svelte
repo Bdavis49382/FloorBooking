@@ -5,6 +5,8 @@
   import Dashboard from "./lib/Dashboard.svelte";
   import Selection from "./lib/Selection.svelte";
   import UnitsDetails from "./lib/Units_Details.svelte";
+  import UnitRequestForm from "./lib/UnitRequestForm.svelte";
+  import Message from "./lib/Message.svelte";
   import { user } from "./lib/stores.svelte";
   import { checkLogin, logout } from "./lib/auth.svelte";
   let isMenuOpen = false; 
@@ -69,12 +71,23 @@
     <Route path="/units/:complexId/:unitId" let:params>
       <UnitsDetails unitId={params.unitId}/>
     </Route>
+    <Route path="/units/:complexId/:unitId/request" let:params>
+      <UnitRequestForm unitId={params.unitId} />
+    </Route>
+    <Route path= "/UnitRequest/:unitId" let:params>
+      <UnitRequestForm unitId={params.unitId} />
+
+    </Route>
+    <Route path="/request-success">
+      <Message />
+
+    </Route>
   </div>
 </Router>
 <footer class="bg-gray-800">
   <div class="max-w-7xl mx-auto py-4 px-4 sm:px-6 lg:py-6 lg:px-8">
     <p class="text-center text-base text-gray-400">
-      &copy; 2025. All Rights Reserved. FloorBooking is a product of FloorBooking Inc.
+      &copy; 2025. All Rights Reserved. Floor Booking is a product of Floor Booking Inc.
     </p>
   </div>
 </footer>
