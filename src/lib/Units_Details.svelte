@@ -1,17 +1,20 @@
 <script>
-  import { getUnit } from "./complexes.svelte";
+    import { getUnit } from "./complexes.svelte";
+    import { navigate } from "svelte-routing";
 
-    let {unitId} = $props();
-    let unitPromise = $state()
-    let requests = [
-      { applicant: "John Doe", apartment: "Apartment 101 / Building 2", approved: false },
-    ];
-
+    let { unitId } = $props();
+    let unitPromise = $state();
+    
     unitPromise = getUnit(unitId);
 
+    // Add debug logging
     function handleRequest(unit) {
-        console.log(`Requesting unit: ${unit.unitNumber} in ${unit.building}`);
-        // Add your request logic here
+        console.log('Unit data:', unit); // Debug log
+        if (!unit.Id) {
+            console.error('ComplexId is missing from unit data');
+            return;
+        }
+        navigate(`/UnitRequest/${unit.Id}`);
     }
 </script>
 
