@@ -49,3 +49,12 @@ export async function register(email, password) {
         return data;
     }
 }
+
+export async function getUserId(userId){
+  let {data, error} = await supabase
+  .from('Complex')
+  .select('Id')
+  .eq('Auth', userId)
+
+  return data[0].Id;
+}
