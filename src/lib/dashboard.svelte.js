@@ -20,6 +20,7 @@ export async function getAllUnitTypes(){
     return data;
 }
 export async function getAllRenters(){
+  const complexId = await getUserId(user.id);
     let {data, error } = await supabase
     .from('Renter')
       .select(`
@@ -30,7 +31,7 @@ export async function getAllRenters(){
         UnitId,
         Unit (Name, Complex(Id), IsAvailable)
       `)
-      let rentersRequest = data.filter((renter) => renter.Unit['IsAvailable'] == true)
+      let rentersRequest = data.filter((renter) => renter.Unit['IsAvailable'] == true && renter.Unit['Complex']['Id'] == complexId)
     return rentersRequest;
 };
 export async function updateUnit(unitId){
@@ -49,6 +50,7 @@ export async function updateRenters(renterId, unitId){
 }
 
 export async function getApprovedRenters(){
+  const complexId = await getUserId(user.id);
   let {data, error } = await supabase
     .from('Renter')
       .select(`
@@ -59,7 +61,7 @@ export async function getApprovedRenters(){
         UnitId,
         Unit (Name, Complex(Id), IsAvailable)
       `)
-      let approvedRenters = data.filter((renter) => renter.Unit['IsAvailable'] == false)
+      let approvedRenters = data.filter((renter) => renter.Unit['IsAvailable'] == false && renter.Unit['Complex']['Id'] == complexId)
       
     return approvedRenters;
 }
